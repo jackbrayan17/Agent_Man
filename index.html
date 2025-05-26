@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Welldone & Co. - Gestion des Agents</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="images/WW.png" type="image/png" />
+  <script src="script.js" defer></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class', // enable dark mode via class
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0A1B33',
+            primaryHover: '#071227',
+            accent: '#3ABEF9',
+            secondary: '#F4F4F6',
+            textDark: '#1F2937',
+            border: '#D1D5DB',
+            darkBg: '#121212',
+            darkText: '#E5E7EB',
+            darkPrimary: '#90CDF4',
+          }
+        }
+      }
+    };
+  </script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+  <script>
+    // Dark mode toggle script
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('themeToggle');
+      const html = document.documentElement;
+      const icon = toggleBtn.querySelector('i');
+
+      // Load saved theme from localStorage or system preference fallback
+      const savedTheme = localStorage.getItem('theme');
+      if (
+        savedTheme === 'dark' ||
+        (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        html.classList.add('dark');
+        icon.classList.replace('fa-moon', 'fa-sun');
+      }
+
+      toggleBtn.addEventListener('click', () => {
+        if (html.classList.contains('dark')) {
+          html.classList.remove('dark');
+          localStorage.setItem('theme', 'light');
+          icon.classList.replace('fa-sun', 'fa-moon');
+        } else {
+          html.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+          icon.classList.replace('fa-moon', 'fa-sun');
+        }
+      });
+    });
+
+    // Dummy addAgent function placeholder, just so the form doesn't break
+    function addAgent(e) {
+      e.preventDefault();
+      alert('Agent ajouté (fonctionnalité à implémenter)');
+    }
+  </script>
+</head>
+
+<body
+  class="bg-secondary text-textDark dark:bg-darkBg dark:text-darkText flex flex-col min-h-screen"
+>
+  <!-- Navbar -->
+  <nav
+    class="bg-[#F9FAFB] dark:bg-[#1F2937] text-primary dark:text-darkPrimary p-4 flex items-center justify-between shadow"
+  >
+    <div class="flex items-center space-x-3">
+      <img src="images/W.png" alt="Logo" class="w-auto h-10" />
+      <h1 class="text-2xl font-bold">Agent Manager</h1>
+    </div>
+
+    <!-- Dark Mode Toggle Button -->
+    <button
+      id="themeToggle"
+      aria-label="Toggle Dark Mode"
+      class="ml-4 p-2 rounded-md text-primary hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent"
+    >
+      <i class="fas fa-moon"></i>
+    </button>
+  </nav>
+
+  <!-- Main content -->
+  <div class="flex-grow container mx-auto p-6">
+    <!-- Form -->
+    <div
+      class="bg-white dark:bg-[#2D3748] p-6 rounded-lg shadow max-w-2xl mx-auto mt-6"
+    >
+      <h2
+        class="text-2xl font-bold mb-4 flex items-center gap-2 text-primary dark:text-darkPrimary"
+      >
+        <i class="fas fa-user-plus"></i> Ajouter un Agent
+      </h2>
+      <form id="agentForm" class="space-y-4" onsubmit="addAgent(event)">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            type="text"
+            id="nom"
+            placeholder="Nom"
+            class="w-full p-3 border border-border rounded dark:bg-[#4A5568] dark:border-gray-600 dark:text-white"
+            required
+          />
+          <input
+            type="text"
+            id="prenom"
+            placeholder="Prénom"
+            class="w-full p-3 border border-border rounded dark:bg-[#4A5568] dark:border-gray-600 dark:text-white"
+            required
+          />
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            type="email"
+            id="email"
+            placeholder="Email"
+            class="w-full p-3 border border-border rounded dark:bg-[#4A5568] dark:border-gray-600 dark:text-white"
+            required
+          />
+          <input
+            type="text"
+            id="telephone"
+            placeholder="Téléphone"
+            class="w-full p-3 border border-border rounded dark:bg-[#4A5568] dark:border-gray-600 dark:text-white"
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          class="bg-primary hover:bg-primaryHover text-white w-full py-3 rounded flex items-center justify-center gap-2"
+        >
+          <i class="fas fa-plus-circle"></i> Ajouter
+        </button>
+      </form>
+    </div>
+
+    <!-- Agents Table -->
+    <div
+      class="bg-white dark:bg-[#2D3748] p-6 rounded-lg shadow max-w-4xl mx-auto mt-10 overflow-x-auto"
+    >
+      <h2
+        class="text-2xl font-bold mb-4 flex items-center gap-2 text-primary dark:text-darkPrimary"
+      >
+        <i class="fas fa-address-book"></i> Liste des Agents
+      </h2>
+      <div
+  id="agentCount"
+  class="text-primary dark:text-darkPrimary mb-4 font-semibold text-lg"
+>
+  Nombre d'agents : 0
+</div>
+      <table class="table-auto w-full border-collapse border text-sm md:text-base">
+        <thead>
+          <tr class="bg-secondary dark:bg-[#4A5568] text-textDark dark:text-darkText">
+            <th class="border border-border px-4 py-2">Email</th>
+            <th class="border border-border px-4 py-2">Téléphone</th>
+            <th class="border border-border px-4 py-2">Action</th>
+          </tr>
+        </thead>
+        <tbody id="agentTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer
+    class="bg-[#F9FAFB] dark:bg-[#1F2937] text-primary dark:text-darkPrimary text-center p-4 mt-10"
+  >
+    <div class="flex flex-col items-center justify-center gap-2">
+      <img src="images/WW.png" alt="Logo Footer" class="w-auto h-10" />
+      <div class="flex items-center gap-2 mt-2 text-sm">
+        <i class="fas fa-code"></i>
+        <span
+          >For <b>Welldone & Co.</b> | Développé par EYOUM Brayan © 2025</span
+        >
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
